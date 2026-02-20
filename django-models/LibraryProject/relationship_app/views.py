@@ -7,7 +7,23 @@ from django.contrib.auth import login
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
+from django.contrib.auth.decorators import permission_required
+from django.http import HttpResponse
 
+
+@permission_required('relationship_app.can_add_book', raise_exception=True)
+def add_book(request):
+    return HttpResponse("You can add books.")
+
+
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+def edit_book(request):
+    return HttpResponse("You can edit books.")
+
+
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+def delete_book(request):
+    return HttpResponse("You can delete books.")
 
 def is_admin(user):
     return user.is_authenticated and user.userprofile.role == 'Admin'
