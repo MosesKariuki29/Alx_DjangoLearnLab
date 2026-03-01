@@ -12,17 +12,84 @@ DEBUG = False
 # Security Configuration
 # ==============================
 
-SECURE_BROWSER_XSS_FILTER = True
-X_FRAME_OPTIONS = 'DENY'
-SECURE_CONTENT_TYPE_NOSNIFF = True
-CSRF_COOKIE_SECURE = True
+# Ensure DEBUG is False in production
+DEBUG = False
+
+
+# ------------------------------
+# HTTPS Enforcement
+# ------------------------------
+
+# Redirect all HTTP traffic to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# HTTP Strict Transport Security (HSTS)
+# Forces browsers to use HTTPS for 1 year (31536000 seconds)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+
+# Apply HSTS policy to all subdomains
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+# Allow site to be included in browser HSTS preload list
+SECURE_HSTS_PRELOAD = True
+
+
+# ------------------------------
+# Secure Cookies
+# ------------------------------
+
+# Ensure session cookies are only sent over HTTPS
 SESSION_COOKIE_SECURE = True
+
+# Ensure CSRF cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = True
+
+# Prevent JavaScript from accessing session cookies
+SESSION_COOKIE_HTTPONLY = True
+
+# Prevent JavaScript from accessing CSRF cookies
+CSRF_COOKIE_HTTPONLY = True
+
+
+# ------------------------------
+# Security Headers
+# ------------------------------
+
+# Prevent clickjacking attacks
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent MIME-type sniffing
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable browser’s built-in XSS filtering
+SECURE_BROWSER_XSS_FILTER = True
+
+# Referrer policy to limit referrer information leakage
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+
+
+# ------------------------------
+# Proxy / Load Balancer Support
+# (Required if deploying behind Nginx/Heroku)
+# ------------------------------
+
+# Tell Django to trust X-Forwarded-Proto header
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+# ------------------------------
+# Trusted Origins & Hosts
+# ------------------------------
 
 CSRF_TRUSTED_ORIGINS = [
     "https://yourdomain.com",
 ]
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "yourdomain.com",
+]
 
 
 # =========================
