@@ -8,22 +8,21 @@ SECRET_KEY = 'django-insecure-_4a@mxx@8)j+a_!e937c6@#4b_rub!wd+y+8q996!j8#@a_m*w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["yourdomain.com"]  # Add your real domain here
+# ==============================
+# Security Configuration
+# ==============================
 
-
-# =========================
-# Security Best Practices
-# =========================
 SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
-
+SECURE_CONTENT_TYPE_NOSNIFF = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 CSRF_TRUSTED_ORIGINS = [
     "https://yourdomain.com",
 ]
+
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
 # =========================
