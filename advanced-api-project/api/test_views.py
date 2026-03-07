@@ -9,8 +9,9 @@ class BookAPITestCase(TestCase):
         # Set up test client
         self.client = APIClient()
 
-        # Create a test user
+        # Create a test user and login to configure separate test database
         self.user = User.objects.create_user(username='testuser', password='testpass123')
+        self.client.login(username='testuser', password='testpass123')
 
         # Create a test author
         self.author = Author.objects.create(name='Test Author')
@@ -66,6 +67,7 @@ class BookAPITestCase(TestCase):
 
     # Test creating a book without authentication (should fail)
     def test_create_book_unauthenticated(self):
+        self.client.logout()
         data = {
             'title': 'Unauthorized Book',
             'publication_year': 2021,
