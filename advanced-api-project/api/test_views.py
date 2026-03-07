@@ -26,11 +26,13 @@ class BookAPITestCase(TestCase):
     def test_list_books(self):
         response = self.client.get('/api/books/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
 
     # Test retrieving a single book (no authentication needed)
     def test_detail_book(self):
         response = self.client.get(f'/api/books/{self.book.id}/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['title'], 'Test Book')
 
     # Test creating a book (authenticated users only)
     def test_create_book(self):
@@ -42,6 +44,7 @@ class BookAPITestCase(TestCase):
         }
         response = self.client.post('/api/books/create/', data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['title'], 'New Book')
 
     # Test updating a book (authenticated users only)
     def test_update_book(self):
@@ -53,6 +56,7 @@ class BookAPITestCase(TestCase):
         }
         response = self.client.put(f'/api/books/{self.book.id}/update/', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['title'], 'Updated Book')
 
     # Test deleting a book (authenticated users only)
     def test_delete_book(self):
@@ -74,13 +78,16 @@ class BookAPITestCase(TestCase):
     def test_filter_books(self):
         response = self.client.get('/api/books/?publication_year=2022')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
 
     # Test searching books by title
     def test_search_books(self):
         response = self.client.get('/api/books/?search=Test')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
 
     # Test ordering books by title
     def test_order_books(self):
         response = self.client.get('/api/books/?ordering=title')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsInstance(response.data, list)
